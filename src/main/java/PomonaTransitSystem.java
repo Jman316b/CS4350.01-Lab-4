@@ -1,10 +1,31 @@
 import java.sql.*;
 
 public class PomonaTransitSystem {
+    // Privated variables for the database connection
+    private static final String DB_NAME = "4350";
+    private static final String USERNAME = "postgres";
+    private static final String PASSWORD = "joshadmin";
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
-        Connection conn = newPTSConnection("CS4350", "postgres", "^d5uvNTM2");
-        
+        // Connect to the database, if error, throw exception.
+        Connection conn = null;
+        Statement statement = null;
+
+        try {
+        // Open connection to the database
+        conn = newPTSConnection(DB_NAME, USERNAME, PASSWORD);
+
+        // Create all tables if they do not exist.
+        statement = conn.createStatement();
+
+
+
+
+        // Close the connection
         closeConnection(conn);
+        }
+        catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
     }
     
     public static Connection newPTSConnection(String dbName, String username, String password) throws ClassNotFoundException, SQLException {
@@ -21,9 +42,12 @@ public class PomonaTransitSystem {
     	// Close the connection
         connection.close();
     }
-    
-    public static String fullSchedule() {
-    	String output = "";
+
+
+    public static String fullSchedule(String startLoc, String destLoc, String date, Connection connection) {
+        // Query the database for the full schedule
+        String query = "SELECT * FROM TripOffering WHERE startLocationName = ? AND destinationName = ? AND date = ?";
+    	String output = "This is a schedule for all trips from " + startLoc + " to " + destLoc + " on " + date + "\n";
     	
     	return output;
     }

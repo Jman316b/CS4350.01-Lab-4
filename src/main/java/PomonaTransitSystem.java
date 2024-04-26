@@ -1,26 +1,27 @@
 import java.sql.*;
+import io.github.cdimascio.dotenv.Dotenv;
 
 public class PomonaTransitSystem {
     // Privated variables for the database connection
+    private static Dotenv dot_env = Dotenv.load();
     private static final String DB_NAME = "4350";
     private static final String USERNAME = "postgres";
     private static final String PASSWORD = "joshadmin";
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
         // Connect to the database, if error, throw exception.
         Connection conn = null;
-        Statement statement = null;
-
+        Statement stmt = null;
         try {
         // Open connection to the database
         conn = newPTSConnection(DB_NAME, USERNAME, PASSWORD);
 
-        // Create all tables if they do not exist.
-        statement = conn.createStatement();
+        stmt = conn.createStatement();
 
-
+        System.out.println(createTables(conn, stmt));
 
 
         // Close the connection
+        stmt.close();
         closeConnection(conn);
         }
         catch (ClassNotFoundException | SQLException e) {
@@ -43,10 +44,135 @@ public class PomonaTransitSystem {
         connection.close();
     }
 
+    /*
+
+    Create the tables in the database. If they already exist, does nothing.
+
+    @param connection: Connection object to the database.
+    @param statement: Statement object to execute SQL queries.
+     
+    @return: Wether tables could or couldn't be created.
+
+    */
+    @SuppressWarnings("unused")
+    public static String createTables(Connection connection, Statement statement){
+        // Check if the connection and statement are not null
+        if (connection != null || statement != null) {
+            try{
+
+                // Trip Table if not already created
+                String createTripTable = 
+                "CREATE TABLE IF NOT EXISTS Trip (" +
+                "tripNumber INT PRIMARY KEY," +
+                "startLocationName VARCHAR(255) NOT NULL," +
+                "destinationName VARCHAR(255) NOT NULL" +
+                ");";
+
+                // Bus Table if not already created
+                String createBusTable =
+                "CREATE TABLE IF NOT EXISTS Bus (" +
+                "busID INT PRIMARY KEY," +
+                "model VARCHAR(255) NOT NULL," +
+                "year INT NOT NULL" +
+                ");";
+
+                // Driver Table if not already created
+                String createDriverTable =
+                "CREATE TABLE IF NOT EXISTS Driver (" +
+                "driverName VARCHAR(255) PRIMARY KEY," +
+                "driverTelephoneNumber VARCHAR(255) NOT NULL" +
+                ");";
+
+                // Stop table if not already created
+                String createStopTable =
+                "CREATE TABLE IF NOT EXISTS Stop (" +
+                "stopID INT PRIMARY KEY," +
+                "stopName VARCHAR(255) NOT NULL" +
+                ");";
+
+                // TripOffering table if not already created
+                String createTripOfferingTable =
+                "CREATE TABLE IF NOT EXISTS TripOffering (" +
+                "tripNumber INT NOT NULL," +
+                "date DATE NOT NULL," +
+                "scheduledStartTime TIME NOT NULL," +
+                "scheduledArrivalTime TIME NOT NULL," +
+                "driverName VARCHAR(255) NOT NULL," +
+                "busID INT NOT NULL," +
+                "PRIMARY KEY (tripNumber, date, scheduledStartTime)," +
+                "FOREIGN KEY (tripNumber) REFERENCES Trip(tripNumber)," +
+                "FOREIGN KEY (driverName) REFERENCES Driver(driverName)," +
+                "FOREIGN KEY (busID) REFERENCES Bus(busID)" +
+                ");";
+
+                // Trip Stop Info table if not already created
+                String createTripStopInfoTable =
+                "CREATE TABLE IF NOT EXISTS TripStopInfo (" +
+                "tripNumber INT NOT NULL," +
+                "stopID INT NOT NULL," +
+                "sequenceNumber INT NOT NULL," +
+                "driveTime VARCHAR(255) NOT NULL," +
+                "FOREIGN KEY (tripNumber) REFERENCES Trip(tripNumber)," +
+                "FOREIGN KEY (stopID) REFERENCES Stop(stopID)" +
+                ");";
+
+                // Actual Trip Stop Info table if not already created
+                String createActualTripStopInfoTable =
+                "CREATE TABLE IF NOT EXISTS ActualTripStopInfo (" +
+                "tripNumber INT NOT NULL," +
+                "date DATE NOT NULL," +
+                "scheduledStartTime TIME NOT NULL," +
+                "stopID INT NOT NULL," +
+                "actualStartTime TIME NULL," +
+                "actualArrivalTime TIME NULL," +
+                "numberOfPassengerIn INT NULL," +
+                "numberOfPassengerOut INT NULL," +
+                "PRIMARY KEY (tripNumber, date, scheduledStartTime, stopID)," +
+                "FOREIGN KEY (tripNumber) REFERENCES Trip(tripNumber)," +
+                "FOREIGN KEY (stopID) REFERENCES Stop(stopID)" +
+                ");";
+
+                // Add all the queries to a batch
+                statement.addBatch(createTripTable);
+                statement.addBatch(createBusTable);
+                statement.addBatch(createDriverTable);
+                statement.addBatch(createStopTable);
+                statement.addBatch(createTripOfferingTable);
+                statement.addBatch(createTripStopInfoTable);
+                statement.addBatch(createActualTripStopInfoTable);
+
+                // Execute the batch
+                statement.executeBatch();
+                return "Tables created successfully!";
+            }
+        catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        return "in if statement but not returning anything, probably an exception is thrown";
+        }
+        // Error handling.
+        else if (connection == null && statement != null){
+            return "Error creating tables, connection is null.";
+        }
+        else if (connection != null && statement == null)
+            return "Error creating tables, statement is null.";
+
+        else
+        return "Error creating tables both connection and statement is null.";
+    }
+
+
+
+
+
+
+
+
+
 
     public static String fullSchedule(String startLoc, String destLoc, String date, Connection connection) {
         // Query the database for the full schedule
-        String query = "SELECT * FROM TripOffering WHERE startLocationName = ? AND destinationName = ? AND date = ?";
     	String output = "This is a schedule for all trips from " + startLoc + " to " + destLoc + " on " + date + "\n";
     	
     	return output;

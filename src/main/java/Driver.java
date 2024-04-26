@@ -1,8 +1,8 @@
 public class Driver{
     private String driverName;
-    private int driverTelephoneNumber;
+    private String driverTelephoneNumber;
 
-    public Driver(String driverName, int driverTelephoneNumber) {
+    public Driver(String driverName, String driverTelephoneNumber) {
         this.driverName = driverName;
         this.driverTelephoneNumber = driverTelephoneNumber;
     }
@@ -15,11 +15,11 @@ public class Driver{
         this.driverName = driverName;
     }
 
-    public int getDriverTelephoneNumber() {
+    public String getDriverTelephoneNumber() {
         return driverTelephoneNumber;
     }
 
-    public void setDriverTelephoneNumber(int driverTelephoneNumber) {
+    public void setDriverTelephoneNumber(String driverTelephoneNumber) {
         this.driverTelephoneNumber = driverTelephoneNumber;
     }
 

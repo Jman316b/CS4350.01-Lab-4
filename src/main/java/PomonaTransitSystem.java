@@ -1,9 +1,7 @@
 import java.sql.*;
-import io.github.cdimascio.dotenv.Dotenv;
 
 public class PomonaTransitSystem {
     // Privated variables for the database connection
-    private static Dotenv dot_env = Dotenv.load();
     private static final String DB_NAME = "4350";
     private static final String USERNAME = "postgres";
     private static final String PASSWORD = "joshadmin";

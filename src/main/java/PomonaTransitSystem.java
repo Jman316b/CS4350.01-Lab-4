@@ -13,9 +13,23 @@ public class PomonaTransitSystem {
         // Open connection to the database
         conn = newPTSConnection(DB_NAME, USERNAME, PASSWORD);
 
+        // Create a statement object to execute SQL queries
         stmt = conn.createStatement();
 
-        System.out.println(createTables(conn, stmt));
+        // Create the tables in the database
+        createTables(conn, stmt);
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         // Close the connection
@@ -53,11 +67,10 @@ public class PomonaTransitSystem {
 
     */
     @SuppressWarnings("unused")
-    public static String createTables(Connection connection, Statement statement){
+    public static void createTables(Connection connection, Statement statement){
         // Check if the connection and statement are not null
         if (connection != null || statement != null) {
             try{
-
                 // Trip Table
                 String createTripTable = 
                 "CREATE TABLE IF NOT EXISTS Trip (" +
@@ -141,23 +154,22 @@ public class PomonaTransitSystem {
 
                 // Execute the batch
                 statement.executeBatch();
-                return "Tables created/recreated successfully!";
+                System.out.println("Tables created successfully.");
             }
         catch (SQLException e) {
                 e.printStackTrace();
+                System.out.println("Error creating tables.");
             }
-
-        return "in if statement but not returning anything, probably an exception is thrown";
         }
         // Error handling.
         else if (connection == null && statement != null){
-            return "Error creating tables, connection is null.";
+            System.out.println("Error creating tables, connection is null.");
         }
         else if (connection != null && statement == null)
-            return "Error creating tables, statement is null.";
+            System.out.println("Error creating tables, statement is null.");
 
         else
-        return "Error creating tables both connection and statement is null.";
+            System.out.println("Error creating tables both connection and statement is null.");
     }
 
 

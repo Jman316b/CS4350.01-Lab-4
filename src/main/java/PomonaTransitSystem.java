@@ -60,7 +60,7 @@ public class PomonaTransitSystem {
         if (connection != null || statement != null) {
             try{
 
-                // Trip Table if not already created
+                // Trip Table
                 String createTripTable = 
                 "CREATE TABLE IF NOT EXISTS Trip (" +
                 "tripNumber INT PRIMARY KEY," +
@@ -68,7 +68,7 @@ public class PomonaTransitSystem {
                 "destinationName VARCHAR(255) NOT NULL" +
                 ");";
 
-                // Bus Table if not already created
+                // Bus Table
                 String createBusTable =
                 "CREATE TABLE IF NOT EXISTS Bus (" +
                 "busID INT PRIMARY KEY," +
@@ -76,21 +76,21 @@ public class PomonaTransitSystem {
                 "year INT NOT NULL" +
                 ");";
 
-                // Driver Table if not already created
+                // Driver Table
                 String createDriverTable =
                 "CREATE TABLE IF NOT EXISTS Driver (" +
                 "driverName VARCHAR(255) PRIMARY KEY," +
                 "driverTelephoneNumber VARCHAR(255) NOT NULL" +
                 ");";
 
-                // Stop table if not already created
+                // Stop Table
                 String createStopTable =
                 "CREATE TABLE IF NOT EXISTS Stop (" +
                 "stopID INT PRIMARY KEY," +
                 "stopName VARCHAR(255) NOT NULL" +
                 ");";
 
-                // TripOffering table if not already created
+                // TripOffering Table
                 String createTripOfferingTable =
                 "CREATE TABLE IF NOT EXISTS TripOffering (" +
                 "tripNumber INT NOT NULL," +
@@ -105,7 +105,7 @@ public class PomonaTransitSystem {
                 "FOREIGN KEY (busID) REFERENCES Bus(busID)" +
                 ");";
 
-                // Trip Stop Info table if not already created
+                // Trip Stop Info Table
                 String createTripStopInfoTable =
                 "CREATE TABLE IF NOT EXISTS TripStopInfo (" +
                 "tripNumber INT NOT NULL," +
@@ -116,7 +116,7 @@ public class PomonaTransitSystem {
                 "FOREIGN KEY (stopID) REFERENCES Stop(stopID)" +
                 ");";
 
-                // Actual Trip Stop Info table if not already created
+                // Actual Trip Stop Info Table
                 String createActualTripStopInfoTable =
                 "CREATE TABLE IF NOT EXISTS ActualTripStopInfo (" +
                 "tripNumber INT NOT NULL," +
@@ -143,7 +143,7 @@ public class PomonaTransitSystem {
 
                 // Execute the batch
                 statement.executeBatch();
-                return "Tables created successfully!";
+                return "Tables created/recreated successfully!";
             }
         catch (SQLException e) {
                 e.printStackTrace();

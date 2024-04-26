@@ -1,12 +1,13 @@
-import java.sql.*;
-
-/*
+/* 
  * Project: Lab 4 - CS 4350
  * Date: 04/28/2024
  * Description: The PomonaTransitSystem class is the main class for the Pomona Transit System.
  * It connects to the database, creates the tables in the database, and performs various operations on the database
  * with the use of the various different custom objects within this package.
  */
+
+// Import statements
+import java.sql.*;
 
 /**
  * The PomonaTransitSystem class is the main class for database manipulation.

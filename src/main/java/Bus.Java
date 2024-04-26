@@ -32,4 +32,11 @@ public class Bus{
     public void setYear(int year) {
         this.year = year;
     }
+
+    public String toString() {
+        return 
+        "\n [PK] Bus ID: " + busID + 
+        "\n Model: " + model + 
+        "\n Year: " + year;
+    }
 }

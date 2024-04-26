@@ -1,30 +1,30 @@
 import java.sql.*;
 
 public class TripOffering{
-	private int tripNumber;
+	private Trip trip;
 	private Date date;
 	private String scheduledStartTime;
 	private String secheduledArrivalTime;
-	private String driverName;
-	private int busID;
+	private Driver driver;
+	private Bus bus;
 	
 	
-	public TripOffering(int tripNumber, Date date, String scheduledStartTime, String secheduledArrivalTime,
-		String driverName, int busID) {
-		this.tripNumber = tripNumber;
+	public TripOffering(Trip trip, Date date, String scheduledStartTime, String secheduledArrivalTime,
+		Driver driver, Bus bus) {
+		this.trip = trip;
 		this.date = date;
 		this.scheduledStartTime = scheduledStartTime;
 		this.secheduledArrivalTime = secheduledArrivalTime;
-		this.driverName = driverName;
-		this.busID = busID;
+		this.driver = driver;
+		this.bus = bus;
 	}
 
-	public int getTripNumber() {
-		return tripNumber;
+	public Trip getTrip() {
+		return trip;
 	}
 
-	public void setTripNumber(int tripNumber) {
-		this.tripNumber = tripNumber;
+	public void setTrip(Trip trip) {
+		this.trip = trip;
 	}
 
 	public String getDate() {
@@ -51,21 +51,29 @@ public class TripOffering{
 		this.secheduledArrivalTime = secheduledArrivalTime;
 	}
 
-	public String getDriverName() {
-		return driverName;
+	public Driver getDriver() {
+		return driver;
 	}
 
-	public void setDriverName(String driverName) {
-		this.driverName = driverName;
+	public void setDriverName(Driver driver) {
+		this.driver = driver;
 	}
 
-	public int getBusID() {
-		return busID;
+	public Bus getBus() {
+		return bus;
 	}
 
-	public void setBusID(int busID) {
-		this.busID = busID;
+	public void setBusID(Bus bus) {
+		this.bus = bus;
 	}
 
-	
+	public String toString() {
+		return 
+		"\n [PK] Trip Number: " + trip.getTripNumber() + 
+		"\n [PK] Date: " + date.toString() + 
+		"\n [PK] Scheduled Start Time: " + scheduledStartTime +
+		"\n Scheduled Arrival Time: " + secheduledArrivalTime + 
+		"\n Driver Name: " + driver.getDriverName() + 
+		"\n Bus ID: " + bus.getBusID();
+	}
 }

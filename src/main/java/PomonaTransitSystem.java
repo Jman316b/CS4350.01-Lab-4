@@ -32,6 +32,7 @@ public class PomonaTransitSystem{
         // Connect to the database, if error, throw exception.
         Connection conn = null;
         Statement stmt = null;
+        //this is for the delete methods bc a separate statement object saves us the pain of accidentally deleting stuff if the batch is never called for stmt.
         Statement dltstmt = null;
 
         // Open connection to the database

@@ -100,7 +100,7 @@ public class TripOffering{
 	 * Get the scheduled arrival time of the trip offering
 	 * @return the scheduled arrival time
 	 */
-	public String getSecheduledArrivalTime() {
+	public String getScheduledArrivalTime() {
 		return secheduledArrivalTime;
 	}
 
@@ -108,7 +108,7 @@ public class TripOffering{
 	 * Set the scheduled arrival time of the trip offering
 	 * @param secheduledArrivalTime - scheduled arrival time
 	 */
-	public void setSecheduledArrivalTime(String secheduledArrivalTime) {
+	public void setScheduledArrivalTime(String secheduledArrivalTime) {
 		this.secheduledArrivalTime = secheduledArrivalTime;
 	}
 
@@ -124,7 +124,7 @@ public class TripOffering{
 	 * Set the Driver object
 	 * @param driver Driver object
 	 */
-	public void setDriverName(Driver driver) {
+	public void setDriver(Driver driver) {
 		this.driver = driver;
 	}
 
@@ -140,7 +140,7 @@ public class TripOffering{
 	 * Set the Bus object
 	 * @param bus Bus object
 	 */
-	public void setBusID(Bus bus) {
+	public void setBus(Bus bus) {
 		this.bus = bus;
 	}
 

@@ -136,7 +136,7 @@ public class ActualTripStopInfo{
         "\n [PK] Date: " + tripOffering.getDate() + 
         "\n [PK] Scheduled Start Time: " + tripOffering.getScheduledStartTime()  + 
         "\n [PK] Stop Number: " + stop.getStopNumber() + 
-        "\n Scheduled Arrival Time: " + tripOffering.getSecheduledArrivalTime() + 
+        "\n Scheduled Arrival Time: " + tripOffering.getScheduledArrivalTime() + 
         "\n Actual Start Time: " + actualStartTime + 
         "\n Actual Arrival Time: " + actualArrivalTime + 
         "\n Number of Passengers In: " + numberOfPassengerIn + 

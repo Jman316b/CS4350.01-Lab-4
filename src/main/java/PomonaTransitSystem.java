@@ -33,7 +33,7 @@ public class PomonaTransitSystem{
         Connection conn = null;
         Statement stmt = null;
         Statement dltstmt = null;
-        try {
+
         // Open connection to the database
         conn = newPTSConnection(DB_NAME, USERNAME, PASSWORD);
         // Create the tables in the database
@@ -51,25 +51,20 @@ public class PomonaTransitSystem{
         date = Date.valueOf("2024-04-28");
         TripOffering tripOffering1 = new TripOffering(trip1, date ,"08:00:00", "08:30:00", driver1, bus1);
         ActualTripStopInfo actualTripStopInfo1 = new ActualTripStopInfo(tripOffering1, stop2, "08:05:32", "08:37:56", 19, 0);
-        //Add the objects to the database
-        try{
-            stmt = conn.createStatement();
-            addTrip(trip1, conn, stmt);
-            addBus(bus1, conn, stmt);
-            addDriver(driver1, conn, stmt);
-            addStop(stop1, conn, stmt);
-            addStop(stop2, conn, stmt);
-            addTripStopInfo(tripStopInfo1, conn, stmt);
-            addTripOffering(tripOffering1, conn, stmt);
-            addDrive(actualTripStopInfo1, conn, stmt);
-            stmt.executeBatch();
-            stmt = null;
-            System.out.println("Ran batch 1. 1st object added.");
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
 
+        //Add the 1st objects to the database
+        stmt = conn.createStatement();
+        addTrip(trip1, conn, stmt);
+        addBus(bus1, conn, stmt);
+        addDriver(driver1, conn, stmt);
+        addStop(stop1, conn, stmt);
+        addStop(stop2, conn, stmt);
+        addTripStopInfo(tripStopInfo1, conn, stmt);
+        addTripOffering(tripOffering1, conn, stmt);
+        addDrive(actualTripStopInfo1, conn, stmt);
+        stmt.executeBatch();
+        stmt = null;
+        System.out.println("Ran batch 1. 1st object added.");
 
         // Second objects created
         Trip trip2 = new Trip(2, "Ontario", "Pomona");
@@ -79,67 +74,50 @@ public class PomonaTransitSystem{
         TripStopInfo tripStopInfo2 = new TripStopInfo(trip2, stop2, 2, "1 hour");
         TripOffering tripOffering2 = new TripOffering(trip2, date ,"10:00:00", "11:00:00", driver2, bus2);
         ActualTripStopInfo actualTripStopInfo2 = new ActualTripStopInfo(tripOffering2, stop2, "10:07:39", "11:10:57", 13, 22);
-        // Add the objects to the database
-        try{
-            stmt = conn.createStatement();
-            addTrip(trip2, conn, stmt);
-            addBus(bus2, conn, stmt);
-            addDriver(driver2, conn, stmt);
-            addStop(stop3, conn, stmt);
-            addTripStopInfo(tripStopInfo2, conn, stmt);
-            addTripOffering(tripOffering2, conn, stmt);
-            addDrive(actualTripStopInfo2, conn, stmt);
-            stmt.executeBatch();
-            stmt = null;
-            System.out.println("Ran batch 2. 2nd object added.");
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
 
+        // Add the 2nd objects to the database
+        stmt = conn.createStatement();
+        addTrip(trip2, conn, stmt);
+        addBus(bus2, conn, stmt);
+        addDriver(driver2, conn, stmt);
+        addStop(stop3, conn, stmt);
+        addTripStopInfo(tripStopInfo2, conn, stmt);
+        addTripOffering(tripOffering2, conn, stmt);
+        addDrive(actualTripStopInfo2, conn, stmt);
+        stmt.executeBatch();
+        stmt = null;
+        System.out.println("Ran batch 2. 2nd object added.");
 
         // Third objects created
         Trip trip3 = new Trip(3, "Los Angeles", "Pomona");
         TripStopInfo tripStopInfo3 = new TripStopInfo(trip3, stop1, 3, "45 minutes");
         TripOffering tripOffering3 = new TripOffering(trip3, date ,"12:00:00", "12:45:00", driver1, bus1);
         ActualTripStopInfo actualTripStopInfo3 = new ActualTripStopInfo(tripOffering3, stop1, "12:03:27", "12:42:06", 31, 16);
-        // Add the objects to the database
-        try{
-            stmt = conn.createStatement();
-            addTrip(trip3, conn, stmt);
-            addTripStopInfo(tripStopInfo3, conn, stmt);
-            addTripOffering(tripOffering3, conn, stmt);
-            addDrive(actualTripStopInfo3, conn, stmt);
-            stmt.executeBatch();
-            stmt = null;
-            System.out.println("Ran batch 3. 3rd object added.");
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
-        //add more objects here maybe change the date, times, destinations, etc.
+
+        // Add the 3rd objects to the database
+        stmt = conn.createStatement();
+        addTrip(trip3, conn, stmt);
+        addTripStopInfo(tripStopInfo3, conn, stmt);
+        addTripOffering(tripOffering3, conn, stmt);
+        addDrive(actualTripStopInfo3, conn, stmt);
+        stmt.executeBatch();
+        stmt = null;
+        System.out.println("Ran batch 3. 3rd object added.");
+
+        // Add more objects here maybe change the date, times, destinations, etc.
+
+
+
+
+
+
     
-        //Display the full schedule of trips on a given date
+        //Display the full schedule of trips given startlocation, name, and date
         fullSchedule("Pomona", "Los Angeles", "2024-04-28", conn);
 
 
-
-
-
-
-
-
-
-
-
-
-
+        stmt.close();
         conn.close();
-        }
-        catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
     }
     /**
     * Connects to the database.

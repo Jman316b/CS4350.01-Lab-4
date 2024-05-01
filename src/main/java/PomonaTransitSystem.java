@@ -39,7 +39,6 @@ public class PomonaTransitSystem{
         conn = newPTSConnection(DB_NAME, USERNAME, PASSWORD);
         // Create the tables in the database
 
-        deleteTables(conn); // for testing
         createTables(conn);
         // Object creation
 
@@ -105,13 +104,22 @@ public class PomonaTransitSystem{
         stmt.executeBatch();
         System.out.println("Ran batch 3. 3rd object added.");
 
+        changeDriver(tripOffering3, driver2, conn, stmt);
+        changeBus(tripOffering3, bus2, conn, stmt);
+
+        deleteTripOffering(tripOffering3, conn, stmt);
         // Add more objects here maybe change the date, times, destinations, etc.
 
+        System.out.print("Trip Stop Info for 3.");
+        System.out.println(tripStopInfo3.toString());
 
+        System.out.println();
+        System.out.print("Driver 1 Schedule for 2024-04-28.");
+        driverScheduleForDate(driver1, "2024-04-28", conn);
 
+        deleteBus(bus1, conn, stmt);
 
-
-
+        recordActualData(actualTripStopInfo1, conn, stmt);
     
         //Display the full schedule of trips given startlocation, name, and date
         fullSchedule("Pomona", "Los Angeles", "2024-04-28", conn);
@@ -247,61 +255,6 @@ public class PomonaTransitSystem{
         else{
             System.out.println("Statement is null. Tables were not created.");
         } 
-    }
-
-    public static void deleteTables(Connection connection) throws SQLException{
-        // Create a statement object to execute SQL queries
-        Statement statement = null;
-        statement = connection.createStatement();
-        // Check if the connection and statement are not null
-        if (connection != null && statement != null) {
-            // Trip Table
-            String deleteTripTable =
-                    "DROP TABLE IF EXISTS Trip CASCADE;";
-
-            // Bus Table
-            String deleteBusTable =
-                    "DROP TABLE IF EXISTS Bus CASCADE;";
-
-            // Driver Table
-            String deleteDriverTable =
-                    "DROP TABLE IF EXISTS Driver CASCADE;";
-
-            // Stop Table
-            String deleteStopTable =
-                    "DROP TABLE IF EXISTS Stop CASCADE;";
-
-            // TripOffering Table
-            String deleteTripOfferingTable =
-                    "DROP TABLE IF EXISTS TripOffering CASCADE;";
-
-            // Trip Stop Info Table
-            String deleteTripStopInfoTable =
-                    "DROP TABLE IF EXISTS TripStopInfo CASCADE;";
-
-            // Actual Trip Stop Info Table
-            String deleteActualTripStopInfoTable =
-                    "DROP TABLE IF EXISTS ActualTripStopInfo CASCADE;";
-
-            // Add all the queries to a batch
-            statement.addBatch(deleteTripTable);
-            statement.addBatch(deleteBusTable);
-            statement.addBatch(deleteDriverTable);
-            statement.addBatch(deleteStopTable);
-            statement.addBatch(deleteTripOfferingTable);
-            statement.addBatch(deleteTripStopInfoTable);
-            statement.addBatch(deleteActualTripStopInfoTable);
-
-            // Execute the batch
-            statement.executeBatch();
-            System.out.println("Tables deleted successfully.");
-        }
-        if (statement != null) {
-            statement.close();
-        }
-        else{
-            System.out.println("Statement is null. Tables were not deleted.");
-        }
     }
 
     /**

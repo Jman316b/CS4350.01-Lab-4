@@ -19,9 +19,9 @@ import java.sql.*;
 public class PomonaTransitSystem{
 
     // Privated variables for the database connection
-    private static final String DB_NAME = "4350";
+    private static final String DB_NAME = "CS4350";
     private static final String USERNAME = "postgres";
-    private static final String PASSWORD = "joshadmin";
+    private static final String PASSWORD = "^d5uvNTM2";
     /**
      * Main method for the Pomona Transit System.
      * @param args The command line arguments.
@@ -38,6 +38,8 @@ public class PomonaTransitSystem{
         // Open connection to the database
         conn = newPTSConnection(DB_NAME, USERNAME, PASSWORD);
         // Create the tables in the database
+
+        deleteTables(conn); // for testing
         createTables(conn);
         // Object creation
 
@@ -64,7 +66,6 @@ public class PomonaTransitSystem{
         addTripOffering(tripOffering1, conn, stmt);
         addDrive(actualTripStopInfo1, conn, stmt);
         stmt.executeBatch();
-        stmt = null;
         System.out.println("Ran batch 1. 1st object added.");
 
         // Second objects created
@@ -102,7 +103,6 @@ public class PomonaTransitSystem{
         addTripOffering(tripOffering3, conn, stmt);
         addDrive(actualTripStopInfo3, conn, stmt);
         stmt.executeBatch();
-        stmt = null;
         System.out.println("Ran batch 3. 3rd object added.");
 
         // Add more objects here maybe change the date, times, destinations, etc.
@@ -115,7 +115,6 @@ public class PomonaTransitSystem{
     
         //Display the full schedule of trips given startlocation, name, and date
         fullSchedule("Pomona", "Los Angeles", "2024-04-28", conn);
-
 
         stmt.close();
         conn.close();
@@ -250,6 +249,61 @@ public class PomonaTransitSystem{
         } 
     }
 
+    public static void deleteTables(Connection connection) throws SQLException{
+        // Create a statement object to execute SQL queries
+        Statement statement = null;
+        statement = connection.createStatement();
+        // Check if the connection and statement are not null
+        if (connection != null && statement != null) {
+            // Trip Table
+            String deleteTripTable =
+                    "DROP TABLE IF EXISTS Trip CASCADE;";
+
+            // Bus Table
+            String deleteBusTable =
+                    "DROP TABLE IF EXISTS Bus CASCADE;";
+
+            // Driver Table
+            String deleteDriverTable =
+                    "DROP TABLE IF EXISTS Driver CASCADE;";
+
+            // Stop Table
+            String deleteStopTable =
+                    "DROP TABLE IF EXISTS Stop CASCADE;";
+
+            // TripOffering Table
+            String deleteTripOfferingTable =
+                    "DROP TABLE IF EXISTS TripOffering CASCADE;";
+
+            // Trip Stop Info Table
+            String deleteTripStopInfoTable =
+                    "DROP TABLE IF EXISTS TripStopInfo CASCADE;";
+
+            // Actual Trip Stop Info Table
+            String deleteActualTripStopInfoTable =
+                    "DROP TABLE IF EXISTS ActualTripStopInfo CASCADE;";
+
+            // Add all the queries to a batch
+            statement.addBatch(deleteTripTable);
+            statement.addBatch(deleteBusTable);
+            statement.addBatch(deleteDriverTable);
+            statement.addBatch(deleteStopTable);
+            statement.addBatch(deleteTripOfferingTable);
+            statement.addBatch(deleteTripStopInfoTable);
+            statement.addBatch(deleteActualTripStopInfoTable);
+
+            // Execute the batch
+            statement.executeBatch();
+            System.out.println("Tables deleted successfully.");
+        }
+        if (statement != null) {
+            statement.close();
+        }
+        else{
+            System.out.println("Statement is null. Tables were not deleted.");
+        }
+    }
+
     /**
      * Display the schedule of all trips on a given date, depending on start location and destination location.
      * 
@@ -278,10 +332,13 @@ public class PomonaTransitSystem{
         rs = statement.executeQuery(query);
         metaData = rs.getMetaData();
 
+        System.out.println();
+        System.out.println("Schedule Info For " + startLoc + " " + date);
         for(int i = 1; i <= metaData.getColumnCount(); i++){
             System.out.print(metaData.getColumnName(i) + "\t");
         }
 
+        System.out.println();
         while (rs.next()) {
             for(int i = 1; i <= metaData.getColumnCount(); i++){
                 System.out.print(rs.getString(i) + "\t");
